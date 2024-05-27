@@ -5,40 +5,30 @@ from game_functions import *
 # Initialize the game
 pygame.init()
 
-# Screen parameters
-screen = pygame.display.set_mode((800, 600))
-
 # Title and Icon
 pygame.display.set_caption("Space Invaders")
-icon = pygame.image.load('spaceship.png')  # Add your own spaceship icon
+icon = pygame.image.load('./assets/spaceship.png')  # Spaceship icon
 pygame.display.set_icon(icon)
 
 # Player
-playerX = 370
-playerY = 480
+player_x = 370
+player_y = 480
 playerX_change = 0
 
 # Enemy
-enemyImg = []
-enemyX = []
-enemyY = []
-enemyX_change = []
-enemyY_change = []
+enemy_img = []
+enemy_x = []
+enemy_y = []
+enemy_x_change = []
+enemy_y_change = []
 num_of_enemies = 6
 
 for i in range(num_of_enemies):
-    enemyImg.append(pygame.image.load('enemy.png'))  # Add your own enemy image
-    enemyX.append(random.randint(0, 735))
-    enemyY.append(random.randint(50, 150))
-    enemyX_change.append(4)
-    enemyY_change.append(40)
-
-# Bullet
-bulletX = 0
-bulletY = 480
-bulletX_change = 0
-bulletY_change = 10
-bullet_state = "ready"
+    enemy_img.append(pygame.image.load('./assets/enemy.png'))  # Enemy image
+    enemy_x.append(random.randint(0, 735))
+    enemy_y.append(random.randint(50, 150))
+    enemy_x_change.append(4)
+    enemy_y_change.append(40)
 
 # Score
 score_value = 0
@@ -46,7 +36,7 @@ score_value = 0
 # Game Loop
 running = True
 while running:
-    screen.fill((0, 0, 0))  # RGB - Red, Green, Blue
+    screen.fill((0, 0, 0))  # RGB
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -60,57 +50,51 @@ while running:
                 playerX_change = 5
             if event.key == pygame.K_SPACE:
                 if bullet_state == "ready":
-                    bulletX = playerX
-                    fire_bullet(bulletX, bulletY)
+                    fire_bullet(player_x, bullet_y)
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 playerX_change = 0
 
     # Checking for boundaries of spaceship
-    playerX += playerX_change
-    if playerX <= 0:
-        playerX = 0
-    elif playerX >= 736:
-        playerX = 736
+    player_x += playerX_change
+    if player_x <= 0:
+        player_x = 0
+    elif player_x >= 736:
+        player_x = 736
 
     # Enemy Movement
     for i in range(num_of_enemies):
 
         # Game Over
-        if enemyY[i] > 440:
+        if enemy_y[i] > 440:
             for j in range(num_of_enemies):
-                enemyY[j] = 2000
+                enemy_y[j] = 2000
             game_over_text()
             break
 
-        enemyX[i] += enemyX_change[i]
-        if enemyX[i] <= 0:
-            enemyX_change[i] = 4
-            enemyY[i] += enemyY_change[i]
-        elif enemyX[i] >= 736:
-            enemyX_change[i] = -4
-            enemyY[i] += enemyY_change[i]
+        enemy_x[i] += enemy_x_change[i]
+        if enemy_x[i] <= 0:
+            enemy_x_change[i] = 4
+            enemy_y[i] += enemy_y_change[i]
+        elif enemy_x[i] >= 736:
+            enemy_x_change[i] = -4
+            enemy_y[i] += enemy_y_change[i]
 
         # Collision
-        collision = is_collision(enemyX[i], enemyY[i], bulletX, bulletY)
+        collision = is_collision(enemy_x[i], enemy_y[i], bullet_x, bullet_y)
         if collision:
-            bulletY = 480
+            bullet_y = 480
             bullet_state = "ready"
             score_value += 1
-            enemyX[i] = random.randint(0, 735)
-            enemyY[i] = random.randint(50, 150)
+            enemy_x[i] = random.randint(0, 735)
+            enemy_y[i] = random.randint(50, 150)
 
-        enemy(enemyX[i], enemyY[i], i, enemyImg)
+        screen.blit(enemy_img[i], (enemy_x[i], enemy_y[i]))
 
     # Bullet Movement
-    if bulletY <= 0:
-        bulletY = 480
-        bullet_state = "ready"
-    if bullet_state == "fire":
-        fire_bullet(bulletX, bulletY)
-        bulletY -= bulletY_change
+    update_bullet()
 
-    player(playerX, playerY)
-    show_score(textX, textY, score_value)
+    player(player_x, player_y)
+    show_score(text_x, text_y, score_value)
     pygame.display.update()

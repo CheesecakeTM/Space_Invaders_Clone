@@ -1,5 +1,4 @@
 import pygame
-import random
 import math
 
 # Initialize Pygame
@@ -9,17 +8,22 @@ pygame.init()
 screen = pygame.display.set_mode((800, 600))
 
 # Load images
-playerImg = pygame.image.load('player.png')  # Add your own player image
-bulletImg = pygame.image.load('bullet.png')  # Add your own bullet image
-enemyImg = pygame.image.load('enemy.png')  # Add your own enemy image
+player_img = pygame.image.load('./assets/player.png')  # Player image
+bullet_img = pygame.image.load('./assets/bullet.png')  # Bullet image
 
 # Score
 font = pygame.font.Font('freesansbold.ttf', 32)
-textX = 10
-textY = 10
+text_x = 10
+text_y = 10
 
 # Game Over
 over_font = pygame.font.Font('freesansbold.ttf', 64)
+
+# Global bullet state and bullet position
+bullet_state = "ready"
+bullet_x = 0
+bullet_y = 480
+bulletY_change = 10
 
 
 def show_score(x, y, score_value):
@@ -33,19 +37,27 @@ def game_over_text():
 
 
 def player(x, y):
-    screen.blit(playerImg, (x, y))
-
-
-def enemy(x, y, i, enemy_img):
-    screen.blit(enemy_img[i], (x, y))
+    screen.blit(player_img, (x, y))
 
 
 def fire_bullet(x, y):
-    global bullet_state
+    global bullet_state, bullet_x, bullet_y
     bullet_state = "fire"
-    screen.blit(bulletImg, (x + 16, y + 10))
+    bullet_x = x
+    bullet_y = y
+    screen.blit(bullet_img, (bullet_x + 16, bullet_y + 10))
 
 
-def is_collision(enemy_x, enemy_y, bullet_x, bullet_y):
-    distance = math.sqrt(math.pow(enemy_x - bullet_x, 2) + math.pow(enemy_y - bullet_y, 2))
+def is_collision(_enemy_x, _enemy_y, _bullet_x, _bullet_y):
+    distance = math.sqrt(math.pow(_enemy_x - _bullet_x, 2) + math.pow(_enemy_y - _bullet_y, 2))
     return distance < 27
+
+
+def update_bullet():
+    global bullet_y, bullet_state
+    if bullet_state == "fire":
+        screen.blit(bullet_img, (bullet_x + 16, bullet_y + 10))
+        bullet_y -= bulletY_change
+    if bullet_y <= 0:
+        bullet_y = 480
+        bullet_state = "ready"

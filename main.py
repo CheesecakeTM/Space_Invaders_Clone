@@ -13,7 +13,7 @@ pygame.display.set_icon(icon)
 # Player
 player_x = 370
 player_y = 480
-playerX_change = 0
+player_x_change = 0
 
 # Enemy
 enemy_img = []
@@ -45,19 +45,19 @@ while running:
         # If keystroke is pressed check whether its right or left
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                playerX_change = -5
+                player_x_change = -5
             if event.key == pygame.K_RIGHT:
-                playerX_change = 5
+                player_x_change = 5
             if event.key == pygame.K_SPACE:
                 if bullet_state == "ready":
                     fire_bullet(player_x, bullet_y)
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                playerX_change = 0
+                player_x_change = 0
 
     # Checking for boundaries of spaceship
-    player_x += playerX_change
+    player_x += player_x_change
     if player_x <= 0:
         player_x = 0
     elif player_x >= 736:

@@ -12,12 +12,12 @@ player_img = pygame.image.load('./assets/player.png')  # Player image
 bullet_img = pygame.image.load('./assets/bullet.png')  # Bullet image
 
 # Score
-font = pygame.font.Font('freesansbold.ttf', 32)
+font = pygame.font.Font('./assets/pixel.ttf', 32)
 text_x = 10
 text_y = 10
 
 # Game Over
-over_font = pygame.font.Font('freesansbold.ttf', 64)
+over_font = pygame.font.Font('./assets/pixel.ttf', 64)
 
 # Global bullet state and bullet position
 bullet_state = "ready"

@@ -1,5 +1,7 @@
 import pygame
 import random
+
+import game_functions
 from game_functions import *
 
 # Initialize the game
@@ -44,16 +46,16 @@ while running:
 
         # If keystroke is pressed check whether its right or left
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 player_x_change = -5
-            if event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 player_x_change = 5
             if event.key == pygame.K_SPACE:
-                if bullet_state == "ready":
-                    fire_bullet(player_x, bullet_y)
+                if game_functions.bullet_state == "ready":
+                    fire_bullet(player_x, game_functions.bullet_y)
 
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_a or event.key == pygame.K_d:
                 player_x_change = 0
 
     # Checking for boundaries of spaceship
@@ -82,7 +84,7 @@ while running:
             enemy_y[i] += enemy_y_change[i]
 
         # Collision
-        collision = is_collision(enemy_x[i], enemy_y[i], bullet_x, bullet_y)
+        collision = is_collision(enemy_x[i], enemy_y[i], game_functions.bullet_x, game_functions.bullet_y)
         if collision:
             bullet_y = 480
             bullet_state = "ready"

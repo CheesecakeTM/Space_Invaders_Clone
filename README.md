@@ -1,1 +1,1 @@
-This is Just a clone of space invaders. An exercise I'm doing to learn python.
+This is Just a clone of Space Invaders. An exercise I'm doing to learn python.

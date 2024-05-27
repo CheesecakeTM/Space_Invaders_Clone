@@ -14,7 +14,7 @@ pygame.display.set_icon(icon)
 
 # Player
 player_x = 370
-player_y = 480
+player_y = 450
 player_x_change = 0
 
 # Enemy
@@ -34,6 +34,22 @@ for i in range(num_of_enemies):
 
 # Score
 score_value = 0
+
+
+# Reset the game to retry
+def reset_game():
+    global player_x, player_y, player_x_change, score_value
+    player_x = 370
+    player_y = 480
+    player_x_change = 0
+    game_functions.bullet_state = "ready"
+    game_functions.bullet_x = 0
+    game_functions.bullet_y = 480
+    score_value = 0
+    for i in range(num_of_enemies):
+        enemy_x[i] = random.randint(0, 735)
+        enemy_y[i] = random.randint(50, 150)
+
 
 # Game Loop
 running = True
@@ -73,6 +89,8 @@ while running:
             for j in range(num_of_enemies):
                 enemy_y[j] = 2000
             game_over_text()
+            if retry_button():
+                reset_game()
             break
 
         enemy_x[i] += enemy_x_change[i]

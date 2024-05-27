@@ -61,3 +61,19 @@ def update_bullet():
     if bullet_y <= 0:
         bullet_y = 480
         bullet_state = "ready"
+
+
+def retry_button():
+    retry_font = pygame.font.Font('./assets/pixel.ttf', 32)
+    retry_text = retry_font.render("Retry", True, (255, 255, 255))
+    button_rect = pygame.Rect(350, 350, 110, 50)
+
+    pygame.draw.rect(screen, (0, 128, 0), button_rect)
+    screen.blit(retry_text, (button_rect.x + 10, button_rect.y + 10))
+
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+
+    if button_rect.collidepoint(mouse):
+        if click[0] == 1:
+            return True
